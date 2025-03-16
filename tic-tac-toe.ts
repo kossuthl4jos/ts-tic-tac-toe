@@ -49,9 +49,9 @@ type Count<
 
 //type TestCount = Count<[" ", "X", "O", " ", " ", " ", " ", " ", "X"]>; //=> type TestCount = [["X", "X"], ["O"]]
 
-type CorrectXO<X extends State[], O extends State[]> =
-  | SameLength<X, O>
-  | SameLength<X, [...O, "O"]>; // number of X's can be one more than O's becuase X goes first, so we add here one to the O's
+type CorrectXO<X extends State[], O extends State[]> = AnyTrue<
+  SameLength<X, O> | SameLength<X, [...O, "O"]> // number of X's can be one more than O's becuase X goes first, so we add here one to the O's
+>;
 
 // type TestCorrectXO = CorrectXO<["X", "X", "X"], ["O", "O"]>; //=> type TestCorrectXO = true
 // type TestCorrectXO = CorrectXO<["X"], ["O", "O"]>; //=> type TestCorrectXO = false
@@ -69,7 +69,6 @@ type WhoIsNext<X extends State[], O extends State[]> = SameLength<
 type AllSame<Arr extends [State, State, State]> = Arr extends
   | ["X", "X", "X"]
   | ["O", "O", "O"]
-  | [" ", " ", " "]
   ? true
   : false;
 
@@ -97,4 +96,4 @@ type TypeTacToe<Board extends GameBoard> = Count<Board> extends [
     : "Too many Xs or Os"
   : never;
 
-type FirstGame = TypeTacToe<[" ", " ", " ", " ", " ", " ", " ", " ", " "]>;
+type FirstGame = TypeTacToe<["X", "X", "O", "O", "X", "X", "X", "O", "O"]>;
